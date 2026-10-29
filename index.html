@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encuesta CETAC 13 | Comunicación, LSM y Lenguas Indígenas</title>
+    <meta name="description" content="Encuesta escolar del CETAC 13 de Guanajuato sobre comunicación, Lengua de Señas Mexicana, lenguas indígenas, náhuatl y tecnología.">
+    <style>
+        :root {
+            --bg: #0b1220;
+            --bg-elevated: #111827;
+            --bg-card: #151f32;
+            --border: rgba(148, 163, 184, 0.12);
+            --border-strong: rgba(148, 163, 184, 0.22);
+            --text: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --accent: #3b82f6;
+            --accent-soft: rgba(59, 130, 246, 0.12);
+            --accent-hover: #2563eb;
+            --violet: #7c3aed;
+            --violet-soft: rgba(124, 58, 237, 0.12);
+            --rose: #e11d48;
+            --success: #10b981;
+            --radius: 12px;
+            --radius-lg: 16px;
+            --shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            line-height: 1.55;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 320px;
+            background: linear-gradient(180deg, rgba(30, 58, 138, 0.18) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        header {
+            position: relative;
+            z-index: 20;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: rgba(11, 18, 32, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+
+        .header-left h1 {
+            font-size: 1.15rem;
+            font-weight: 650;
+            color: var(--text);
+            letter-spacing: -0.02em;
+        }
+
+        .header-left p {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 450;
+        }
+
+        .logo-wrap {
+            width: 72px;
+            height: 72px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #fff;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .main {
+            position: relative;
+            z-index: 10;
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 1.75rem 1.15rem 3.5rem;
+        }
+
+        .progress-wrap {
+            margin-bottom: 1.5rem;
+        }
+
+        .progress-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.8125rem;
+            color: var(--text-secondary);
+        }
+
+        .progress-meta strong {
+            color: var(--text);
+            font-weight: 600;
+        }
+
+        .progress-track {
+            height: 5px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 99px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #2563eb, #7c3aed);
+            border-radius: 99px;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.75rem 1.5rem;
+            box-shadow: var(--shadow);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .card.leaving {
+            opacity: 0;
+            transform: translateY(8px);
+        }
+
+        .card.entering {
+            animation: enter 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        @keyframes enter {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .block-tag {
+            display: inline-block;
+            font-size: 0.6875rem;
+            font-weight: 600;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+            color: #60a5fa;
+            background: var(--accent-soft);
+            padding: 0.28rem 0.65rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+        }
+
+        .question {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text);
+            line-height: 1.4;
+            margin-bottom: 1.35rem;
+            letter-spacing: -0.015em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .option {
+            position: relative;
+        }
+
+        .option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .option label {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.85rem 1rem;
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.9375rem;
+            color: var(--text-secondary);
+        }
+
+        .option label:hover {
+            background: rgba(255, 255, 255, 0.045);
+            border-color: var(--border-strong);
+            color: var(--text);
+        }
+
+        .option input:checked + label {
+            background: var(--accent-soft);
+            border-color: rgba(59, 130, 246, 0.45);
+            color: var(--text);
+        }
+
+        .radio {
+            width: 18px;
+            height: 18px;
+            border: 1.5px solid var(--text-muted);
+            border-radius: 50%;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .option input:checked + label .radio {
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+
+        .option input:checked + label .radio::after {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: #fff;
+            border-radius: 50%;
+        }
+
+        .text-field {
+            width: 100%;
+            min-height: 120px;
+            padding: 0.9rem 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-size: 0.9375rem;
+            font-family: inherit;
+            resize: vertical;
+            transition: border-color 0.2s ease;
+        }
+
+        .text-field:focus {
+            outline: none;
+            border-color: rgba(59, 130, 246, 0.5);
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+        }
+
+        .text-field::placeholder {
+            color: var(--text-muted);
+        }
+
+        .hint {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .error {
+            display: none;
+            align-items: center;
+            gap: 0.4rem;
+            margin-top: 0.85rem;
+            font-size: 0.8125rem;
+            color: #f87171;
+        }
+
+        .error.show {
+            display: flex;
+        }
+
+        .actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 1.6rem;
+        }
+
+        .btn {
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.45rem;
+            padding: 0.8rem 1.1rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.04);
+            color: var(--text);
+            border-color: var(--border-strong);
+        }
+
+        .btn-secondary:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+
+        .btn-submit {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: #fff;
+            width: 100%;
+            padding: 0.95rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-submit:hover {
+            filter: brightness(1.08);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.65;
+            cursor: wait;
+        }
+
+        .spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.65s linear infinite;
+            display: none;
+        }
+
+        .btn-submit.loading .spinner { display: block; }
+        .btn-submit.loading .btn-text { display: none; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .thank-you {
+            display: none;
+            text-align: center;
+            padding: 2.5rem 1.25rem;
+        }
+
+        .thank-you.active {
+            display: block;
+            animation: enter 0.45s ease;
+        }
+
+        .check {
+            width: 72px;
+            height: 72px;
+            margin: 0 auto 1.4rem;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 28px -6px rgba(37, 99, 235, 0.45);
+        }
+
+        .check svg {
+            width: 36px;
+            height: 36px;
+            stroke: #fff;
+            stroke-width: 2.5;
+            fill: none;
+        }
+
+        .thank-you h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text);
+            margin-bottom: 0.85rem;
+            letter-spacing: -0.02em;
+        }
+
+        .thank-you p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 380px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .thank-you .emoji {
+            margin-top: 1.4rem;
+            font-size: 1.5rem;
+            letter-spacing: 0.25rem;
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 0.85rem 1rem;
+            }
+
+            .logo-wrap {
+                width: 58px;
+                height: 58px;
+            }
+
+            .header-left h1 {
+                font-size: 1rem;
+            }
+
+            .card {
+                padding: 1.4rem 1.15rem;
+            }
+
+            .question {
+                font-size: 1.05rem;
+            }
+
+            .actions {
+                flex-direction: column-reverse;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+
+        @media (min-width: 640px) {
+            .main {
+                padding-top: 2.25rem;
+            }
+
+            .card {
+                padding: 2rem 1.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <h1>Encuesta CETAC 13</h1>
+            <p>Comunicación · LSM · Lenguas indígenas</p>
+        </div>
+        <div class="logo-wrap">
+            <img src="logo-cetac13.png" alt="Logo CETAC 13 Guanajuato">
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="progress-wrap" id="progressWrap">
+            <div class="progress-meta">
+                <span><strong id="qLabel">Pregunta 1</strong> de 25</span>
+                <span id="pctLabel">4%</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progressFill" style="width:4%"></div>
+            </div>
+        </div>
+
+        <div class="card" id="card">
+            <span class="block-tag" id="blockTag">Bloque 1 · Comunicación y sociedad</span>
+            <h2 class="question" id="questionText"></h2>
+            <div class="options" id="options"></div>
+            <div class="error" id="error">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                Selecciona una opción para continuar
+            </div>
+            <div class="actions" id="actions">
+                <button type="button" class="btn btn-secondary" id="btnPrev" disabled>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+                    Anterior
+                </button>
+                <button type="button" class="btn btn-primary" id="btnNext">
+                    Siguiente
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 18l6-6-6-6"/></svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="thank-you" id="thankYou">
+            <div class="check">
+                <svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h2>¡GRACIAS POR TU TIEMPO! 💜❤️</h2>
+            <p>«Lo apreciamos muchísimo. Tu participación nos ayuda a promover una comunicación más accesible, respetuosa e incluyente».</p>
+            <div class="emoji">💜 ❤️ 💜</div>
+        </div>
+    </main>
+
+    <script>
+        const questions = [
+            { block: "Bloque 1 · Comunicación y sociedad", text: "¿Qué tan importante consideras la comunicación entre las personas?", options: ["Muy importante", "Importante", "Poco importante", "Nada importante"], required: true },
+            { block: "Bloque 1 · Comunicación y sociedad", text: "¿Consideras que existen dificultades de comunicación en la sociedad?", options: ["Sí, muchas", "Sí, algunas", "Muy pocas", "No lo considero"], required: true },
+            { block: "Bloque 1 · Comunicación y sociedad", text: "¿Crees que existe suficiente información sobre las distintas formas de comunicación?", options: ["Sí, suficiente", "Hay algo de información", "Hay muy poca información", "No hay suficiente información"], required: true },
+            { block: "Bloque 1 · Comunicación y sociedad", text: "¿Qué tan importante es preservar las lenguas y culturas indígenas?", options: ["Muy importante", "Importante", "Poco importante", "Nada importante"], required: true },
+            { block: "Bloque 1 · Comunicación y sociedad", text: "¿Estás de acuerdo con que existan más oportunidades para aprender diferentes formas de comunicación?", options: ["Totalmente de acuerdo", "De acuerdo", "En desacuerdo", "Totalmente en desacuerdo"], required: true },
+            { block: "Bloque 1 · Comunicación y sociedad", text: "¿Cuál consideras que es el principal obstáculo para la comunicación entre las personas?", options: ["Falta de conocimiento o aprendizaje", "Diferencias de idioma", "Discapacidad auditiva o del habla y falta de accesibilidad", "Prejuicios o falta de empatía", "Falta de herramientas tecnológicas", "Otro"], required: true },
+            { block: "Bloque 2 · Lengua de Señas Mexicana (LSM)", text: "¿Qué tanto conoces la Lengua de Señas Mexicana (LSM)?", options: ["La conozco muy bien", "Conozco algunas señas", "La he escuchado mencionar", "No la conocía"], required: true },
+            { block: "Bloque 2 · Lengua de Señas Mexicana (LSM)", text: "¿Conoces o tienes contacto con personas sordas?", options: ["Sí, familiares o amistades", "Sí, en la escuela o trabajo", "Las conozco de manera ocasional", "No, por ahora"], required: true },
+            { block: "Bloque 2 · Lengua de Señas Mexicana (LSM)", text: "¿Consideras que existen dificultades para comunicarse con personas sordas?", options: ["Sí, muchas", "Sí, algunas", "Pocas", "No, si existe accesibilidad"], required: true },
+            { block: "Bloque 2 · Lengua de Señas Mexicana (LSM)", text: "¿De dónde obtienes información sobre la Lengua de Señas Mexicana?", options: ["Escuela", "Redes sociales o internet", "Familiares o amistades", "Cursos o talleres", "No he recibido información", "Otro"], required: true },
+            { block: "Bloque 2 · Lengua de Señas Mexicana (LSM)", text: "¿Qué impacto tendría facilitar la comunicación con personas sordas en la inclusión social?", options: ["Un impacto muy positivo", "Un impacto positivo", "Poco impacto", "Ningún impacto"], required: true },
+            { block: "Bloque 2 · Lengua de Señas Mexicana (LSM)", text: "¿Qué tan importante consideras aprender señas básicas?", options: ["Muy importante", "Importante", "Poco importante", "Nada importante"], required: true },
+            { block: "Bloque 3 · Lenguas indígenas y náhuatl", text: "¿Qué tanto conoces las lenguas indígenas de México?", options: ["Conozco varias", "Conozco algunas", "Solo he escuchado sus nombres", "No conozco ninguna"], required: true },
+            { block: "Bloque 3 · Lenguas indígenas y náhuatl", text: "¿Conoces o tienes contacto con personas que hablan alguna lengua indígena?", options: ["Sí, familiares o amistades", "Sí, en mi comunidad o escuela", "Las conozco de manera ocasional", "No, por ahora"], required: true },
+            { block: "Bloque 3 · Lenguas indígenas y náhuatl", text: "¿Qué tanto conoces la lengua náhuatl?", options: ["La hablo o la entiendo", "Conozco varias palabras", "Solo conozco su nombre", "No la conocía"], required: true },
+            { block: "Bloque 3 · Lenguas indígenas y náhuatl", text: "¿Qué consecuencias tendría que las lenguas indígenas dejaran de transmitirse a las nuevas generaciones?", options: ["Se perdería una parte importante de la cultura e identidad", "Se perderían conocimientos y tradiciones", "Tendría pocas consecuencias", "No estoy seguro/a"], required: true },
+            { block: "Bloque 3 · Lenguas indígenas y náhuatl", text: "¿Te interesaría aprender palabras o expresiones en náhuatl?", options: ["Sí, mucho", "Sí, un poco", "Tal vez", "No me interesa por ahora"], required: true },
+            { block: "Bloque 3 · Lenguas indígenas y náhuatl", text: "¿Consideras importante preservar y difundir la lengua náhuatl?", options: ["Muy importante", "Importante", "Poco importante", "Nada importante"], required: true },
+            { block: "Bloque 3 · Lenguas indígenas y náhuatl", text: "¿Crees que la tecnología puede ayudar a conservar las lenguas indígenas?", options: ["Sí, mucho", "Sí, en parte", "Muy poco", "No lo creo"], required: true },
+            { block: "Bloque 4 · Tecnología y aplicaciones", text: "¿Crees que la tecnología puede reducir las barreras de comunicación?", options: ["Sí, mucho", "Sí, en parte", "Muy poco", "No lo creo"], required: true },
+            { block: "Bloque 4 · Tecnología y aplicaciones", text: "¿Qué tan útil consideras una aplicación para facilitar la comunicación con personas sordas?", options: ["Muy útil", "Útil", "Poco útil", "Nada útil"], required: true },
+            { block: "Bloque 4 · Tecnología y aplicaciones", text: "¿Qué tan útil consideras un traductor de español a náhuatl?", options: ["Muy útil", "Útil", "Poco útil", "Nada útil"], required: true },
+            { block: "Bloque 4 · Tecnología y aplicaciones", text: "¿Qué función te parecería más importante en una herramienta tecnológica para mejorar la comunicación?", options: ["Traducir texto entre idiomas", "Mostrar señas mediante imágenes o videos", "Escuchar voz y convertirla en texto", "Leer en voz alta el texto escrito", "Ofrecer varias de estas funciones"], required: true },
+            { block: "Bloque 4 · Tecnología y aplicaciones", text: "¿Qué tan probable sería que utilizaras una aplicación para aprender LSM o palabras en náhuatl?", options: ["Muy probable", "Probable", "Poco probable", "Nada probable"], required: true },
+            { block: "Bloque 4 · Tecnología y aplicaciones", text: "¿Qué sugerencia darías para mejorar la comunicación y promover el respeto por la diversidad lingüística?", options: null, required: false, type: "text" }
+        ];
+
+        let current = 0;
+        const answers = {};
+        const total = questions.length;
+
+        const card = document.getElementById('card');
+        const blockTag = document.getElementById('blockTag');
+        const questionText = document.getElementById('questionText');
+        const optionsEl = document.getElementById('options');
+        const errorEl = document.getElementById('error');
+        const btnPrev = document.getElementById('btnPrev');
+        const btnNext = document.getElementById('btnNext');
+        const qLabel = document.getElementById('qLabel');
+        const pctLabel = document.getElementById('pctLabel');
+        const progressFill = document.getElementById('progressFill');
+        const progressWrap = document.getElementById('progressWrap');
+        const thankYou = document.getElementById('thankYou');
+        const actions = document.getElementById('actions');
+
+        function render(index, animate = true) {
+            const q = questions[index];
+
+            const doUpdate = () => {
+                const pct = Math.round(((index + 1) / total) * 100);
+                qLabel.textContent = `Pregunta ${index + 1}`;
+                pctLabel.textContent = pct + '%';
+                progressFill.style.width = pct + '%';
+
+                blockTag.textContent = q.block;
+                questionText.textContent = q.text;
+                optionsEl.innerHTML = '';
+                errorEl.classList.remove('show');
+
+                if (q.type === 'text') {
+                    const val = answers[index] || '';
+                    optionsEl.innerHTML = `
+                        <textarea class="text-field" id="textField" placeholder="Escribe tu sugerencia aquí...">${val}</textarea>
+                        <p class="hint">Esta pregunta es opcional.</p>
+                    `;
+                } else {
+                    q.options.forEach((opt, i) => {
+                        const id = `o${index}_${i}`;
+                        const checked = answers[index] === opt ? 'checked' : '';
+                        const div = document.createElement('div');
+                        div.className = 'option';
+                        div.innerHTML = `
+                            <input type="radio" name="q${index}" id="${id}" value="${opt.replace(/"/g,'&quot;')}" ${checked}>
+                            <label for="${id}">
+                                <span class="radio"></span>
+                                <span>${opt}</span>
+                            </label>
+                        `;
+                        optionsEl.appendChild(div);
+                    });
+                }
+
+                btnPrev.disabled = index === 0;
+
+                if (index === total - 1) {
+                    btnNext.style.display = 'none';
+                    let sub = document.getElementById('btnSubmit');
+                    if (!sub) {
+                        sub = document.createElement('button');
+                        sub.type = 'button';
+                        sub.className = 'btn btn-submit';
+                        sub.id = 'btnSubmit';
+                        sub.innerHTML = `<span class="btn-text">Enviar respuestas</span><div class="spinner"></div>`;
+                        sub.addEventListener('click', submit);
+                        actions.appendChild(sub);
+                    }
+                    sub.style.display = 'flex';
+                } else {
+                    btnNext.style.display = 'inline-flex';
+                    const sub = document.getElementById('btnSubmit');
+                    if (sub) sub.style.display = 'none';
+                }
+
+                if (animate) {
+                    card.classList.remove('leaving');
+                    card.classList.add('entering');
+                }
+            };
+
+            if (animate) {
+                card.classList.add('leaving');
+                setTimeout(doUpdate, 200);
+            } else {
+                doUpdate();
+            }
+        }
+
+        function save() {
+            const q = questions[current];
+            if (q.type === 'text') {
+                const ta = document.getElementById('textField');
+                if (ta) answers[current] = ta.value.trim();
+            } else {
+                const sel = document.querySelector(`input[name="q${current}"]:checked`);
+                if (sel) answers[current] = sel.value;
+            }
+        }
+
+        function validate() {
+            const q = questions[current];
+            if (!q.required || q.type === 'text') return true;
+            const sel = document.querySelector(`input[name="q${current}"]:checked`);
+            if (!sel) {
+                errorEl.classList.add('show');
+                return false;
+            }
+            errorEl.classList.remove('show');
+            return true;
+        }
+
+        btnNext.addEventListener('click', () => {
+            if (!validate()) return;
+            save();
+            if (current < total - 1) {
+                current++;
+                render(current);
+            }
+        });
+
+        btnPrev.addEventListener('click', () => {
+            save();
+            if (current > 0) {
+                current--;
+                render(current);
+            }
+        });
+
+        async function submit() {
+            save();
+
+            for (let i = 0; i < total; i++) {
+                if (questions[i].required && !answers[i]) {
+                    current = i;
+                    render(current);
+                    errorEl.classList.add('show');
+                    return;
+                }
+            }
+
+            const btn = document.getElementById('btnSubmit');
+            btn.classList.add('loading');
+            btn.disabled = true;
+
+            const payload = {
+                encuesta: "CETAC 13 - Comunicación, LSM y Lenguas Indígenas",
+                fecha: new Date().toISOString(),
+                respuestas: {}
+            };
+
+            questions.forEach((q, i) => {
+                payload.respuestas[`P${i+1}`] = {
+                    pregunta: q.text,
+                    respuesta: answers[i] || "(sin respuesta)"
+                };
+            });
+
+            const ENDPOINT = "https://formspree.io/f/xpwzgkqy";
+
+            try {
+                const res = await fetch(ENDPOINT, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json", "Accept": "application/json" },
+                    body: JSON.stringify(payload)
+                });
+
+                if (res.ok) {
+                    showThanks();
+                } else {
+                    localStorage.setItem("cetac13_" + Date.now(), JSON.stringify(payload));
+                    showThanks();
+                }
+            } catch (e) {
+                localStorage.setItem("cetac13_" + Date.now(), JSON.stringify(payload));
+                showThanks();
+            } finally {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }
+        }
+
+        function showThanks() {
+            card.style.display = 'none';
+            progressWrap.style.display = 'none';
+            thankYou.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        render(0, false);
+    </script>
+</body>
+</html>
